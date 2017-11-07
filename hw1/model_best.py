@@ -219,9 +219,9 @@ def main(data_dir, output, mode):
 	save = 1
 	postfix = ''
 
-	phone_map = make_phone_map()
-	phone2index,index2phone, index2char = make_phone_char()
-	label = make_label(phone2index)
+	phone_map = make_phone_map(data_dir)
+	phone2index,index2phone, index2char = make_phone_char(data_dir)
+	label = make_label(phone2index,data_dir)
 	
 	if mode == 'test':
 		test(data_dir, test_model, feature, model, hidden, layer, output, index2char, index2phone, phone_map, phone2index)
