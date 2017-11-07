@@ -1,22 +1,21 @@
-from config import DATA_DIR
 from collections import defaultdict
 import os
 import torch
 
-def make_phone_map():
+def make_phone_map(data_dir):
 	phone_map = {}
-	with open(os.path.join(DATA_DIR,'phones/48_39.map'),'r') as f:
+	with open(os.path.join(data_dir,'phones/48_39.map'),'r') as f:
 		for line in f.readlines():
 			m1 = line.strip().split('\t')[0]
 			m2 = line.strip().split('\t')[1]
 			phone_map[m1] = m2
 	return phone_map
 
-def make_phone_char():
+def make_phone_char(data_dir):
 	phone2index = {}
 	index2phone = {}
 	index2char = {}
-	with open(os.path.join(DATA_DIR,'48phone_char.map'),'r') as f:
+	with open(os.path.join(data_dir,'48phone_char.map'),'r') as f:
 		for line in f.readlines():
 			info = line.strip().split('\t')
 			phone2index[info[0]] = info[1]
@@ -24,9 +23,9 @@ def make_phone_char():
 			index2char[int(info[1])] = info[2]
 	return phone2index,index2phone,index2char
 
-def make_label(phone2index):
+def make_label(phone2index,data_dir):
 	label = defaultdict(list)
-	with open(os.path.join(DATA_DIR,'label/train.lab'),'r') as f:
+	with open(os.path.join(data_dir,'label/train.lab'),'r') as f:
 		for line in f.readlines():
 			info = line.strip().split(',')
 			speaker = '_'.join(info[0].split('_')[:-1])
