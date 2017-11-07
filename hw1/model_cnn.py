@@ -1,5 +1,5 @@
 from utils import *
-import editdistance
+#import editdistance
 from config import SAVE_DIR,USE_CUDA,PHONE_NUM 
 import torch
 import torch.nn as nn
@@ -154,7 +154,7 @@ def train(data_dir, feature,label, epochs, model, layer, hidden, save,postfix, i
 	for epoch in range(1,epochs+1):
 		print("Epoch {}".format(epoch))
 		epoch_loss = 0
-		epoch_edit = 0
+		#epoch_edit = 0
 		for i in tqdm(range(1,train_size+1)):
 			data = dataset[i-1]
 			speaker = data[0]
@@ -172,18 +172,18 @@ def train(data_dir, feature,label, epochs, model, layer, hidden, save,postfix, i
 			target = target.cuda() if USE_CUDA else target
 			
 			loss = criterion(output,target)
-			edit = editdistance.eval(output_seq,target_seq)
+			#edit = editdistance.eval(output_seq,target_seq)
 
 			epoch_loss += loss.data[0]/train_size
-			epoch_edit += edit/train_size
+			#epoch_edit += edit/train_size
 		
 			loss.backward()
 			optimizer.step()
 
 		print("Negative log-likelihood: {}".format(epoch_loss))
-		print("Edit distance: {} ".format(epoch_edit))
+		#print("Edit distance: {} ".format(epoch_edit))
 		val_loss = 0
-		val_edit = 0
+		#val_edit = 0
 		for i in tqdm(range(train_size+1,len(dataset)+1)):
 			data = dataset[i-1]
 			speaker = data[0]
@@ -197,9 +197,9 @@ def train(data_dir, feature,label, epochs, model, layer, hidden, save,postfix, i
 			output_seq = test_trim(index2char,index2phone, phone_map, phone2index,torch.max(output,1)[1].data.cpu().numpy())
 			target_seq = trim_and_map(index2char,index2phone, phone_map, phone2index,[[int(l)] for l in label[speaker]])
 				
-			val_edit += editdistance.eval(output_seq,target_seq)
+			#val_edit += editdistance.eval(output_seq,target_seq)
 		print("Validation loss: {}".format(val_loss/(len(dataset)-train_size)))
-		print("Validation edit distance: {}".format(val_edit/(len(dataset)-train_size)))
+		#print("Validation edit distance: {}".format(val_edit/(len(dataset)-train_size)))
 
 		if epoch%save == 0:
 			directory = os.path.join(SAVE_DIR, feature, model, '{}-{}{}'.format(layer,hidden,postfix))
@@ -209,7 +209,7 @@ def train(data_dir, feature,label, epochs, model, layer, hidden, save,postfix, i
 				'model': train_model.state_dict(),
                 		'opt': optimizer.state_dict(),
                 		'val_loss': val_loss/(len(dataset)-train_size),
-				'val_edit': val_edit/(len(dataset)-train_size),
+				#'val_edit': val_edit/(len(dataset)-train_size),
 				}, os.path.join(directory, '{}.tar'.format(epoch)))
 	print("Finish training")
 
@@ -250,13 +250,13 @@ def test(data_dir, test, feature, model, hidden, layer,  output, index2char, ind
 
 def train_loss(train_dir):
     loss_dict = {}
-    edit_dict = {}
+    #edit_dict = {}
     for f in os.listdir(train_dir):
         checkpoint = torch.load(os.path.join(train_dir,f))
         loss_dict[f] = checkpoint['val_loss']
-        edit_dict[f] = checkpoint['val_edit']
+        #edit_dict[f] = checkpoint['val_edit']
     print(loss_dict)
-    print(edit_dict)
+    #print(edit_dict)
 	
 
 def main(data_dir, output, mode):
