@@ -73,12 +73,9 @@ class Agent_DQN(Agent):
         self.eps_start = 0.95
         self.eps_end = 0.05
         self.eps_decay = 500000 
-        print("Building DQN model...")
         self.Q = DQN().cuda()
         self.target_Q = DQN().cuda()
-        print("Building optimizer ...")
         self.opt = optim.RMSprop(self.Q.parameters(),lr = 0.00025)
-        print("Initializing Replay Memory...")
         self.memory = ReplayMemory(100000)
         self.reward_queue = deque([])
         self.steps_done = 0
@@ -98,7 +95,7 @@ class Agent_DQN(Agent):
         ##################
         # YOUR CODE HERE #
         ##################
-        checkpoint = torch.load('../8800000.tar')
+        checkpoint = torch.load('8800000.tar')
         self.Q = DQN().cuda()
         self.Q.load_state_dict(checkpoint['Q'])
         self.target_Q = DQN().cuda()

@@ -62,9 +62,7 @@ class Agent_PG(Agent):
 
         super(Agent_PG, self).__init__(env)
         self.gamma = 0.99
-        print("Building PG  model...")
         self.model = Policy()
-        print("Building optimizer ...")
         self.opt = optim.RMSprop(self.model.parameters(),lr = 1e-4, weight_decay = 0.99)
         self.save_every = 100000
         self.reward_queue = deque([])
@@ -73,12 +71,10 @@ class Agent_PG(Agent):
 
         if args.test_pg:
             # you can load your model here
-            print('loading trained model')
-            checkpoint = torch.load('../31300000.tar')
+            checkpoint = torch.load('31300000.tar')
             self.model = Policy()
             self.model.load_state_dict(checkpoint['policy'])
             self.model.eval()
-            print("Latest reward of 30 episode: {}".format(checkpoint['reward_queue']))
 
     def init_game_setting(self):
         """
