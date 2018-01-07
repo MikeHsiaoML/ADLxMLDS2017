@@ -1,0 +1,8 @@
+BATCH_SIZE = 64
+D_STEPS = 5 
+G_STEPS = 1 
+EMB_DIM = 4800
+NOISE_DIM = 100
+FEAT_DIM = 128
+EPOCH = 500 
+SAVE_DIR = './save/wgan/'
