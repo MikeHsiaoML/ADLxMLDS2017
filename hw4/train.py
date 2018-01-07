@@ -12,9 +12,6 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 from tqdm import tqdm
 
-if torch.cuda.is_available():
-	print("Using Cuda Device...")
-
 def img_prepro(image_path):
 	import skimage
 	import skimage.io
